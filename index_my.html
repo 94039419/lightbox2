@@ -1,0 +1,114 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href='css/woman_my.css' />
+<title>自己制作的美国女人</title>
+</head>
+
+<body>
+
+	<div class="wrap">
+    	<div class="content" id="content">
+        	<div class="item" id="item_{{index}}">
+            	<img src="img/{{index}}.jpg" class="big_img"/>
+                <div class="title">
+                	<p class="title1">{{title}}</p>
+                </div>
+            </div>
+        </div>
+        <div class="ctrl" id="ctrl">
+        	<a href="#" class="a_tag" id="a_tag{{index}}" onclick="imgChange({{index}})" ><img src="img/{{index}}.jpg" class="sm_img" /></a>
+        </div>
+    </div>
+    
+    <script>
+    	window.onload=function(){
+			setCurrent();
+		}
+		
+		function g(selector){														//定义通用函数
+			if(selector.substr(0,1)=="."){
+				return document.getElementsByClassName(selector.substr(1));
+			}
+			return document.getElementById(selector);
+		}
+		
+		var data=[
+			{img:1,titile1:"我是titile1"},
+			{img:2,titile1:"我是titile2"},
+			{img:3,titile1:"我是titile3"},
+			{img:4,titile1:"我是titile4"},
+			{img:5,titile1:"我是titile5"},
+			{img:6,titile1:"我是titile6"},
+			{img:7,titile1:"我是titile7"},
+		]
+		
+		
+		var contentArr=[];
+		var ctrlArr=[];
+		var contentData= g("content").innerHTML;
+		var ctrlData= g("ctrl").innerHTML;
+		
+		for(var i in data){													
+			var _cont=contentData.replace(/{{index}}/g,data[i].img).
+							      replace(/{{title}}/g,data[i].titile1);
+								  
+			var _ctrl=ctrlData.replace(/{{index}}/g,data[i].img);
+						
+			contentArr.push(_cont);
+		    ctrlArr.push(_ctrl)
+		}
+		
+		g("content").innerHTML=contentArr.join("");
+		g("ctrl").innerHTML= ctrlArr.join("");
+		g("content").innerHTML+='<div class="copy_item" id="copy_item_1">'+
+            						'<img src="img/1.jpg" class="big_img"/>'+
+               						' <div class="title">'+
+                						
+               					 	'</div>'+
+            					'</div>';
+		
+		function setCurrent(){											//将第一张图片设置为首张
+			g("item_1").className="item current";
+			g("a_tag1").className="a_tag a_tag_current";
+			
+			
+		}
+		
+		
+		function imgChange(id){										//变换图片
+			
+			if(!/a_tag_current/.test(g("a_tag"+id).className)){
+				
+				for(var i=0;i<g(".a_tag").length;i++){
+					g(".a_tag")[i].className="a_tag";
+				}
+				g("a_tag"+id).className+=" a_tag_current";
+				
+				for(var i=0;i<g(".item").length;i++){
+					g(".item")[i].className="item";
+				}
+				g("item_"+id).className+=" current";
+				
+				g(".copy_item")[0].id="copy_item_"+id;
+				
+				
+				g("copy_item_"+id).getElementsByTagName("img")[0].src="img/"+id+".jpg";
+				
+			}
+			
+			
+			
+			
+		}
+		
+
+		
+		
+		
+		
+		
+    </script>
+</body>
+</html>
